@@ -547,19 +547,6 @@
                                 android:paddingHorizontal="8dp"
                                 android:paddingVertical="0dp"
                                 app:cornerRadius="8dp" />
-
-                            <Button
-                                android:id="@+id/btnSendFeedback"
-                                android:layout_width="wrap_content"
-                                android:layout_height="38dp"
-                                android:layout_marginStart="8dp"
-                                android:backgroundTint="@color/bg_card"
-                                android:text="💬 FEEDBACK"
-                                android:textColor="@color/text_primary"
-                                android:textSize="11sp"
-                                android:paddingHorizontal="12dp"
-                                android:paddingVertical="0dp"
-                                app:cornerRadius="8dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

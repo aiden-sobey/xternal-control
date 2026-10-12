@@ -1155,9 +1155,6 @@ class MainActivity : AppCompatActivity() {
             findViewById<View>(R.id.btnRateApp)?.setOnClickListener {
                 openPlayStoreRating()
             }
-            findViewById<View>(R.id.btnSendFeedback)?.setOnClickListener {
-                sendFeedbackEmail()
-            }
         } else {
             cardPlaystoreReview?.visibility = View.GONE
         }
@@ -1174,37 +1171,6 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             val webUri = Uri.parse("https://play.google.com/store/apps/details?id=$targetPackage")
             startActivity(Intent(Intent.ACTION_VIEW, webUri))
-        }
-    }
-
-    private fun sendFeedbackEmail() {
-        try {
-            val displayInfo = if (externalDisplayId != -1) {
-                "ID: $externalDisplayId, Res: ${externalDisplayWidth}x${externalDisplayHeight}"
-            } else {
-                "None connected"
-            }
-            val subject = "Feedback: Xternal Control v${BuildConfig.VERSION_NAME}"
-            val body = """
-                
-                
-                --- Device Diagnostics ---
-                App Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
-                Flavor: ${BuildConfig.FLAVOR}
-                Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}
-                Android Version: ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})
-                External Screen: $displayInfo
-            """.trimIndent()
-
-            val intent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf("arkay107@gmail.com"))
-                putExtra(Intent.EXTRA_SUBJECT, subject)
-                putExtra(Intent.EXTRA_TEXT, body)
-            }
-            startActivity(Intent.createChooser(intent, "Send Feedback"))
-        } catch (e: Exception) {
-            Toast.makeText(this, "No email app found to send feedback", Toast.LENGTH_SHORT).show()
         }
     }
 
