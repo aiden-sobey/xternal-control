@@ -132,6 +132,7 @@ class MainActivity : AppCompatActivity() {
 
     // Display Management
     private lateinit var displayManager: DisplayManager
+    private var displayListener: DisplayManager.DisplayListener? = null
     private var externalDisplayId: Int = -1
 
     // Trackpad gestures state
@@ -780,7 +781,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupDisplayListener() {
-        displayManager.registerDisplayListener(object : DisplayManager.DisplayListener {
+        val listener = object : DisplayManager.DisplayListener {
             override fun onDisplayAdded(displayId: Int) {
                 checkExternalDisplays()
             }
@@ -790,7 +791,9 @@ class MainActivity : AppCompatActivity() {
             override fun onDisplayChanged(displayId: Int) {
                 checkExternalDisplays()
             }
-        }, null)
+        }
+        displayListener = listener
+        displayManager.registerDisplayListener(listener, null)
     }
 
     private fun activateTrackpadMode() {
@@ -2522,5 +2525,10 @@ class MainActivity : AppCompatActivity() {
         if (::billingManager.isInitialized) {
             billingManager.destroy()
         }
+
+        // The accessibility service keeps the process alive after this activity is gone, so release
+        // the display listener and the app-context cursor overlay or they pile up as phantom cursors
+        displayListener?.let { displayManager.unregisterDisplayListener(it) }
+        hideOverlayCursor()
     }
 }
